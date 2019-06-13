@@ -21,6 +21,7 @@ module.exports = {
     ]
   },
   plugins:[
+    // 把打包好的文件注入到哪里
     new HtmlWebpackPlugin({
       template:'./src/index.html'
     })
