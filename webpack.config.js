@@ -1,6 +1,7 @@
 const path = require('path');
 //插件plugin是需要引入的，loader不需要
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const config = require("./src/config/index.js");
 
 module.exports = {
@@ -22,10 +23,28 @@ module.exports = {
   },*/
   module:{
     rules:[
-      {
+      /*{
         test:/\.(js|jsx)$/,
         exclude:/node_modules/, //排除依赖
         use:'babel-loader'
+      },*/
+      {
+        test:/\.(js|jsx)$/,
+        exclude:/node_modules/,
+        use: {
+         loader: 'babel-loader',
+         options: {
+          presets: ['@babel/preset-env'],
+          plugins: [
+           ['@babel/plugin-transform-runtime'],
+           [
+          // 为了兼容IE8才用了这个插件
+          // 没有IE8兼容需求的可以把这个插件去掉
+          '@babel/plugin-transform-modules-commonjs'
+           ]
+          ]
+         }
+        }
       },
       {
         test:/\.css$/,
@@ -34,51 +53,72 @@ module.exports = {
       {
         test:/\.less$/,//不要忘记css-loader
         use:['style-loader','css-loader','less-loader']
-      }
+      },
+      /*{
+        test:/\.jsx$/,
+        exclude:/node_modules/,
+        use:'es3ify-loader'
+      }*/
     ]
   },
   plugins:[
   // 输出管理，指定打包的文件，生成新的index.htnl,并将bundle.js注入其中
     new HtmlWebpackPlugin({
       template:'./src/index.html'
-    })
+    }),
+    /*new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions:{
+          ie8:true,
+          ecma:5,
+          warnings: false,
+          mangle:{
+            reserved:['export','default','$','exports','import','module']
+          },
+          compress:{
+            reduce_funcs:false,//确定影响IE8的报错的配置
+          },
+          output:{
+              comments:false
+          }
+        }
+    }),*/
   ],
   // 设置代理-解决跨域
   // 端口和热更新等已经在package.json文件中配置，也可以在这里配置
   // 如果是用脚手架搭建的项目，有webpack.dev.config.js,则在这个文件下添加以下配置
-  /*devServer: {
+  devServer: {
         historyApiFallback: true, //标识任意的404响应都会被替换成index.html
         contentBase: "./",
-        quiet: false, //控制台中不输出打包的信息
-        noInfo: false,
+        quiet: false, //显示打包的信息(运行地址，版本信息，打包时间等)
+        // noInfo: false,
         hot: true, //开启热点
         inline: true, //开启页面自动刷新
         lazy: false, //不启动懒加载
-        progress: true, //显示打包的进度
+        // progress: true, //显示打包的进度
         watchOptions: {
-            aggregateTimeout: 300
+            aggregateTimeout: 300 //设置监听等待的时间
         },
         port: '8088', //设置端口号
         proxy: {
             '/api': {
-                target: '×××',
-                secure: false
+                target:config.baseURL,
+                changeOrigin:true
             }
         }
-
-    }*/
-  devServer:{
+    },
+  /*devServer:{
     proxy:{
       '/api':{
         target:config.baseURL,  //要代理的域名，即接口地址
         // secure:false,       //https请求时需要加这个
         changeOrigin:true,     //如果接口跨域，需要配置这个参数
-        /*pathRewrite:{        //接口需要重写的配置这个
+        pathRewrite:{        //接口需要重写的配置这个
           '^/api':'/api'       //接口里有/api（ http://XX.XX.XX.XX:8083/api/login）
           // '^/api':''        // 接口里没有/api（http://XX.XX.XX.XX:8083/login）
-        }*/
+        }
       }
-    },
+    },*/
     //标识任意的404响应都会被替换成index.html
     /*historyApiFallback:true,
     // 不同页面响应不同404
@@ -87,6 +127,16 @@ module.exports = {
         {from:/^\/$/,to:'./src/404.html'},
         {from:/./,to:'./static/404.html'},
       ]
-    }*/
-  },
+    }
+  },*/
+  optimization: {
+    minimizer: [
+       new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+         ie8: true,
+        }
+         })
+      ]
+   }
 }

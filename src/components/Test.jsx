@@ -12,7 +12,7 @@ class Test extends React.Component{
 	}
   handleClick(e){
     post(urls.getMessage,{}).then((res)=>{
-      console.log("请求成功：",res)
+      console.log("跨域请求成功：",res)
     })
   }
   render(){
