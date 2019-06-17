@@ -2,26 +2,26 @@ const path = require('path');
 //插件plugin是需要引入的，loader不需要
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const config = require("./src/config/index.js");
-
+// const config = require("./src/config/index.js");
 module.exports = {
-  // 单个入口 单个出口
-  entry:'./main.js',
+  entry:{
+    main:'./main.js'
+  },
+  plugins:[
+  // 输出管理，指定打包的文件，生成新的index.htnl,并将bundle.js注入其中
+    new HtmlWebpackPlugin({
+      template:'./index.html',
+      // title:'Production'
+      // favicon:'./static/favicon.ico'
+      // favicon: path.resolve('./static/favicon.ico')
+    }),
+  ],
   output:{
     path:path.resolve(__dirname,'dist'),
-    filename:'bundle.js',
-    // publicPath:'./'
+    filename:'[name].bundle.js',
+    // publicPath:'./' //开发-'/',生产-'./' html-webpack-plugin 生成index.html时，publicPath是可以不用配置的。
+    // publicPath: process.env.NODE_ENV === 'production'? './': '/'//不生效
   },
-  // 多个入口，多个出口
-  /*entry:{
-    main:'./main.js',
-    index:'./src/index.js',
-    vendors:['jquery','moment'] //需要打包的第三方插件
-  },
-  output:{
-    path:path.resolve(__dirname,'dist'),
-    filename:'[name].js'
-  },*/
   module:{
     rules:[
       {
@@ -29,24 +29,6 @@ module.exports = {
         exclude:/node_modules/, //排除依赖
         use:'babel-loader'
       },
-      /*{
-        test:/\.(js|jsx)$/,
-        exclude:/node_modules/,
-        use: {
-         loader: 'babel-loader',
-         options: {
-          presets: ['@babel/preset-env'],
-          plugins: [
-           ['@babel/plugin-transform-runtime'],
-           [
-          // 为了兼容IE8才用了这个插件
-          // 没有IE8兼容需求的可以把这个插件去掉
-          '@babel/plugin-transform-modules-commonjs'
-           ]
-          ]
-         }
-        }
-      },*/
       {
         test:/\.css$/,
         use:['style-loader','css-loader']
@@ -66,18 +48,13 @@ module.exports = {
       }*/
     ]
   },
-  plugins:[
-  // 输出管理，指定打包的文件，生成新的index.htnl,并将bundle.js注入其中
-    new HtmlWebpackPlugin({
-      template:'./src/index.html'
-    }),
-  ],
+  
   // 设置代理-解决跨域
   // 端口和热更新等已经在package.json文件中配置，也可以在这里配置
   // 如果是用脚手架搭建的项目，有webpack.dev.config.js,则在这个文件下添加以下配置
-  devServer: {
+  /*devServer: {
         historyApiFallback: true, //标识任意的404响应都会被替换成index.html
-        contentBase: "./",
+        // contentBase: "./",//开发环境下的可访问文件
         quiet: false, //显示打包的信息(运行地址，版本信息，打包时间等)
         // noInfo: false,
         hot: true, //开启热点
@@ -94,7 +71,7 @@ module.exports = {
                 changeOrigin:true
             }
         }
-    },
+    },*/
   /*devServer:{
     proxy:{
       '/api':{
