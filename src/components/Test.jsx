@@ -4,6 +4,7 @@ import './Test.less';
 import {post,urls} from '../config';
 import icon from '../../static/img/7.png';
 import _icon from '../../static/img/8.png';
+import subIcon from './images/1.png';
 
 class Test extends React.Component{
 	constructor(props){
@@ -20,10 +21,13 @@ class Test extends React.Component{
   render(){
   	const {flag} = this.state;
     return <div className={'box'}>
-      <p className={'text border'}>test webpackConfigaration in react project</p>
+      <p className={'text border'}>
+        <img src={subIcon}/>
+        test webpackConfigaration in react project
+      </p>
       <p className={`tip ${flag?"border":null}`}>
         <img src={icon}/>
-        动态添加多个类名（ES6写法）
+        动态添加多个类名（ES6写法），打包
       </p>
       <p className={["tip",flag?"border":null].join(' ')}>
         <img src={_icon}/>
