@@ -9,7 +9,8 @@ module.exports = {
   entry:'./main.js',
   output:{
     path:path.resolve(__dirname,'dist'),
-    filename:'bundle.js'
+    filename:'bundle.js',
+    // publicPath:'./'
   },
   // 多个入口，多个出口
   /*entry:{
@@ -23,12 +24,12 @@ module.exports = {
   },*/
   module:{
     rules:[
-      /*{
+      {
         test:/\.(js|jsx)$/,
         exclude:/node_modules/, //排除依赖
         use:'babel-loader'
-      },*/
-      {
+      },
+      /*{
         test:/\.(js|jsx)$/,
         exclude:/node_modules/,
         use: {
@@ -45,7 +46,7 @@ module.exports = {
           ]
          }
         }
-      },
+      },*/
       {
         test:/\.css$/,
         use:['style-loader','css-loader']
@@ -53,6 +54,10 @@ module.exports = {
       {
         test:/\.less$/,//不要忘记css-loader
         use:['style-loader','css-loader','less-loader']
+      },
+      {
+        test:/\.(png|jpe?g|gif|svg)$/,
+        use:'url-loader'
       },
       /*{
         test:/\.jsx$/,
@@ -66,23 +71,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template:'./src/index.html'
     }),
-    /*new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions:{
-          ie8:true,
-          ecma:5,
-          warnings: false,
-          mangle:{
-            reserved:['export','default','$','exports','import','module']
-          },
-          compress:{
-            reduce_funcs:false,//确定影响IE8的报错的配置
-          },
-          output:{
-              comments:false
-          }
-        }
-    }),*/
   ],
   // 设置代理-解决跨域
   // 端口和热更新等已经在package.json文件中配置，也可以在这里配置

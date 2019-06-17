@@ -1,7 +1,9 @@
 import React from 'react';
 // import './test.css';
 import './Test.less';
-import {post,urls} from '../config'
+import {post,urls} from '../config';
+import icon from '../../static/img/7.png';
+import _icon from '../../static/img/8.png';
 
 class Test extends React.Component{
 	constructor(props){
@@ -19,8 +21,14 @@ class Test extends React.Component{
   	const {flag} = this.state;
     return <div className={'box'}>
       <p className={'text border'}>test webpackConfigaration in react project</p>
-      <p className={`tip ${flag?"border":null}`}>动态添加多个类名（ES6写法）</p>
-      <p className={["tip",flag?"border":null].join(' ')}>动态添加多个类名（普通写法）</p>
+      <p className={`tip ${flag?"border":null}`}>
+        <img src={icon}/>
+        动态添加多个类名（ES6写法）
+      </p>
+      <p className={["tip",flag?"border":null].join(' ')}>
+        <img src={_icon}/>
+        动态添加多个类名（普通写法）
+      </p>
       <span className={"btn"} onClick={this.handleClick}>请求数据</span>
     </div>
   }
