@@ -27,7 +27,7 @@ class Test extends React.Component{
       </p>
       <p className={`tip ${flag?"border":null}`}>
         <img src={icon}/>
-        动态添加多个类名（ES6写法），打包
+        动态添加多个类名（ES6写法），测试
       </p>
       <p className={["tip",flag?"border":null].join(' ')}>
         <img src={_icon}/>
