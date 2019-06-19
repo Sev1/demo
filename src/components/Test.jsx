@@ -1,5 +1,4 @@
 import React from 'react';
-// import './test.css';
 import './Test.less';
 import {post,urls} from '../config';
 import icon from '../../static/img/7.png';
@@ -23,15 +22,15 @@ class Test extends React.Component{
     return <div className={'box'}>
       <p className={'text border'}>
         <img src={subIcon}/>
-        test webpackConfigaration in react project
+        webpackConfigaration in react project
       </p>
-      <p className={`tip ${flag?"border":null}`}>
-        <img src={icon}/>
-        动态添加多个类名（ES6写法），测试
+      <p className={`tip bg ${flag?"border":null}`}>
+        {/*<img src={icon}/>*/}
+        动态添加多个类名（ES6写法），背景
       </p>
       <p className={["tip",flag?"border":null].join(' ')}>
         <img src={_icon}/>
-        动态添加多个类名（普通写法）
+        动态添加多个类名（普通写法），图片
       </p>
       <span className={"btn"} onClick={this.handleClick}>请求数据</span>
     </div>

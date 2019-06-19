@@ -1,8 +1,7 @@
 const $ = require('jquery');
-const baseURL = "http://192.168.2.236:5050";
-// const baseURL = "http://192.168.×.×××:80";
+const baseURL = "http://192.168.×.×××:80";
 const urls = {
-  getMessage:'/api/icss/disclaimerInformation/getDisclaimerInformations'
+  getMessage:'/api/×××'
 }
 
 const post = function(url,data){
