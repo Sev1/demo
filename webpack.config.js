@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-// 如果使用css进行开发可以进行配置，若使用less/sass，则没必要配置
+// 如果使用css进行开发可以进行配置，若使用less/sass，则没必要配置;require引入的文件无法实现样式热更新
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = require("./src/config/index.js");
 const copyWebpackPlugin = require('copy-webpack-plugin');
@@ -52,7 +52,14 @@ module.exports = {
       {
         test:/\.(js|jsx)$/,
         exclude:/node_modules/, //排除依赖
-        use:'babel-loader'
+        // use:'babel-loader',
+        use:{
+          loader:'babel-loader',
+          // 配置options后可以不用写.babelrc文件
+          options:{
+            presets:['@babel/preset-env','@babel/preset-react']
+          }
+        }
       },
       {
         test:/\.css$/,
@@ -87,7 +94,6 @@ module.exports = {
   
   // 端口和热更新等可以在package.json文件中配置，也可以在这里配置
   // webpack默认的配置文件是webpack.config.js,如果我们的配置文件名为webpack.config.js，则不需要在package.json中指定配置文件--config webpack.config.js
-  // 如果是用脚手架搭建的项目，有webpack.dev.config.js,则在这个文件下添加以下配置
   devServer: {
         historyApiFallback: true, //标识任意的404响应都会被替换成index.html
         /*// 不同页面响应不同404
@@ -108,6 +114,8 @@ module.exports = {
           aggregateTimeout: 300  //设置监听等待的时间
         },
         port: '8088',            //设置端口号
+        openPage: '?isDemo=true', //指定打开浏览器时导航到的页面,http://localhost:8088/?isDemo=true
+        // 通过package.json配置：webpack-dev-server --open-page "/different/page"
         proxy: {                 // 设置代理-解决跨域
           '/api':{
             target:config.baseURL,  //要代理的域名，即接口地址
